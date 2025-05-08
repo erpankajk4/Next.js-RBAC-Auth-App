@@ -1,6 +1,5 @@
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { PrismaClient } from '@/generated/prisma';
-import { neon } from '@neondatabase/serverless';
 
 const prismaClientSingleton = () => {
   const adapter = new PrismaNeon({ connectionString: process.env.POSTGRES_PRISMA_URL! });

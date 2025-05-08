@@ -31,13 +31,17 @@ export default async function ArticlesPage() {
       </div>
 
       <ul className="space-y-4">
-        {articles.map((article) => (
-          <li key={article.id} className="border p-4 rounded">
-            <h2 className="text-xl font-semibold">{article.title}</h2>
-            <p className="text-gray-700 mt-2">{article.content}</p>
-            <p className="text-sm text-gray-500 mt-1">by {article.author?.name || "Unknown"}</p>
-          </li>
-        ))}
+                    {articles.map( (article: { id: string; title: string; content: string; author: { name: string | null }; }) => (
+                  <li key={article.id} className="border p-4 rounded">
+                    <h2 className="text-xl font-semibold">{article.title}</h2>
+                    <p className="text-gray-700 mt-2">{article.content}</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      by {article.author?.name || "Unknown"}
+                    </p>
+                  </li>
+                )
+              )}
+
       </ul>
     </main>
   );

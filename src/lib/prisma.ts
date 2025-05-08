@@ -9,7 +9,6 @@ const prismaClientSingleton = () => {
 
 declare global {
   // Prevent multiple Prisma instances in development
-  // eslint-disable-next-line no-var
   var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>;
 }
 

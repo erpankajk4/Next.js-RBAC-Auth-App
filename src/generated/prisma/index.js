@@ -211,11 +211,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "POSTGRES_PRISMA_URL",
-        "value": "postgres://neondb_owner:npg_dq1htR4Akbrx@ep-rough-boat-a4nzo7t8-pooler.us-east-1.aws.neon.tech/neondb?connect_timeout=15&sslmode=require"
+        "value": null
       }
     }
   },

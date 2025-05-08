@@ -2,9 +2,14 @@
 
 import { useTransition } from "react";
 import { updateUserRole } from "../actions";
+type User = {
+  id: string;
+  name: string | null;
+  email: string;
+  role: "USER" | "ADMIN";
+};
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function UserTable({ users }: { users: any[] }) {
+export default function UserTable({ users }: { users: User[] }) {
   const [isPending, startTransition] = useTransition();
 
   const handleRoleChange = (id: string, currentRole: string) => {

@@ -16,9 +16,9 @@ export default function ProfilePage() {
     }
   }, [status]);
 
-  if (status === "loading") {
-    Loading();
-  }
+if (status === "loading") {
+  return <Loading />; 
+}
 
   const isAdmin = session?.user?.role === "ADMIN";
 

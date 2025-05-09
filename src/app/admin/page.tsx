@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import UserTable from "./_components/UserTable";
 import { getSession } from "@/lib/getSession";
 
-export const runtime = "nodejs"; // required because Prisma uses Node
+export const runtime = "nodejs"
 
 export default async function AdminPage() {
   const session = await getSession();

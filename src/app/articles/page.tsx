@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 export default async function ArticlesPage() {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session || !session?.user) {
     redirect("/login");
   }
 

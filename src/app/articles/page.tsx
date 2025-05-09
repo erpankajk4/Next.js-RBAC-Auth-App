@@ -4,10 +4,11 @@ import { Link } from "next-view-transitions";
 import { getSession } from "@/lib/getSession";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic"; 
 
 export default async function ArticlesPage() {
   const session = await getSession();
-  
+
 if (!session?.user || !(session.user.role === "ADMIN" || session.user.role === "USER")) {
   redirect("/login");
 }

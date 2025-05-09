@@ -12,6 +12,14 @@ export default function ArticlesPage() {
   const [articles, setArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+    if (typeof window !== "undefined" && !sessionStorage.getItem("hasRefreshed")) {
+      sessionStorage.setItem("hasRefreshed", "true");
+      window.location.reload();
+    }
+  }, []);
+  
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");

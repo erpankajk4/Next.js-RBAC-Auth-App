@@ -1,12 +1,12 @@
-import { auth } from "@/utils/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { Link } from "next-view-transitions";
+import { getSession } from "next-auth/react";
 
 export const runtime = "nodejs";
 
 export default async function ArticlesPage() {
-  const session = await auth();
+  const session = await getSession();
 
   if (!session || !session?.user) {
     redirect("/login");

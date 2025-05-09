@@ -1,29 +1,39 @@
-import prisma from "@/lib/prisma";
-import { redirect } from "next/navigation";
-import { auth } from "@/utils/auth";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Loading from "../loading";
 
-export const getSession = async () => {
-  return await auth(); 
-};
+export default function ArticlesPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [articles, setArticles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic"; 
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
 
-export default async function ArticlesPage() {
-  const session = await getSession();
+    if (status === "authenticated") {
+      fetch("/api/articles")
+        .then((res) => {
+          if (!res.ok) throw new Error("Unauthorized");
+          return res.json();
+        })
+        .then((data) => {
+          setArticles(data);
+          setLoading(false);
+        })
+        .catch(() => {
+          router.push("/login");
+        });
+    }
+  }, [status]);
 
-  // 🔒 Protect route for authenticated USER or ADMIN only
-  if (!session?.user || !["ADMIN", "USER"].includes(session.user.role)) {
-    redirect("/login");
-  }
-
-  // 📦 Fetch articles: all if admin, own if user
-  const articles = await prisma.article.findMany({
-    where: session.user.role === "ADMIN" ? {} : { userId: session.user.id },
-    orderBy: { createdAt: "desc" },
-    include: { author: true },
-  });
+  if (status === "loading" || loading) return <Loading />;
 
   return (
     <main className="p-4 max-w-3xl mx-auto min-h-[88.5vh]">
@@ -38,7 +48,7 @@ export default async function ArticlesPage() {
       </div>
 
       <ul className="space-y-4">
-                    {articles.map( (article: { id: string; title: string; content: string; author: { name: string | null }; }) => (
+        {articles.map((article) => (
           <li key={article.id} className="p-4 rounded bg-zinc-200">
             <h2 className="text-xl font-semibold">{article.title}</h2>
             <p className="text-gray-700 mt-2">{article.content}</p>

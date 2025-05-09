@@ -38,12 +38,12 @@ export default function ProfilePage() {
           </button>
         )}
 
-        <button
+       {(session?.user?.role === "USER" || isAdmin) && <button
           onClick={() => router.push("/articles")}
           className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full"
         >
           View My Articles
-        </button>
+        </button>}
 
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}

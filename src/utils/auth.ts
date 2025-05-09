@@ -22,25 +22,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         const email = credentials?.email as string;
         const password = credentials?.password as string;
-      
+
         if (!email || !password) {
           throw new CredentialsSignin("Email and password are required");
         }
-      
+
         const user = await prisma.user.findUnique({
           where: { email },
         });
-      
+
         if (!user || !user.password) {
           throw new Error("No user found or password not set");
         }
-      
+
         const isValid = await compare(password, user.password);
-      
+
         if (!isValid) {
           throw new Error("Invalid credentials");
         }
-      
+
         // Return only safe fields
         return {
           id: user.id,
@@ -49,7 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           role: user.role,
         };
       }
-      
+
     }),
   ],
   pages: {
@@ -57,42 +57,47 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   secret: process.env.AUTH_SECRET,
   session: {
-    strategy: "jwt", 
+    strategy: "jwt",
   },
   callbacks: {
     authorized({ request: { nextUrl }, auth }) {
       const isLoggedIn = !!auth?.user;
       const pathname = nextUrl.pathname;
       const userRole = auth?.user?.role ?? "USER";
-    
+
       // ✅ Prevent logged-in users from accessing /login again
       if (pathname === "/login" && isLoggedIn) {
         return Response.redirect(new URL("/profile", nextUrl));
       }
-    
+
       // ✅ Block unauthorized users from accessing /admin
       if (pathname.startsWith("/admin") && userRole !== "ADMIN") {
         return Response.redirect(new URL("/", nextUrl));
       }
-    
+
+      // ✅ Block unauthorized users from accessing /articles
+      if (pathname.startsWith("/articles") && (userRole !== "ADMIN" && userRole !== "USER")) {
+        return Response.redirect(new URL("/login", nextUrl));
+      }
+
       // ✅ Require authentication for protected routes
       const protectedPaths = ["/profile", "/articles", "/admin"];
       const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
-    
+
       if (isProtected && !isLoggedIn) {
         return Response.redirect(new URL("/login", nextUrl));
       }
-    
+
       return true; // allow access
-    },    
-  async session({ session, token }) {
-    // Read data from token
-    if (token) {
-      session.user.id = token.id as string;
-      session.user.role = token.role as "USER" | "ADMIN";
-    }
-    return session;
-  },
+    },
+    async session({ session, token }) {
+      // Read data from token
+      if (token) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as "USER" | "ADMIN";
+      }
+      return session;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;

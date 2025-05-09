@@ -3,6 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Loading from "../loading";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -16,7 +17,7 @@ export default function ProfilePage() {
   }, [status]);
 
   if (status === "loading") {
-    return <div className="text-center p-8">Loading session...</div>;
+    Loading();
   }
 
   const isAdmin = session?.user?.role === "ADMIN";

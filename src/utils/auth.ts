@@ -75,13 +75,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return Response.redirect(new URL("/", nextUrl));
       }
 
-      // ✅ Block unauthorized users from accessing /articles
-      if (pathname.startsWith("/articles") && (userRole !== "ADMIN" && userRole !== "USER")) {
-        return Response.redirect(new URL("/login", nextUrl));
-      }
-
       // ✅ Require authentication for protected routes
-      const protectedPaths = ["/profile", "/articles", "/admin"];
+      const protectedPaths = ["/profile", "/admin"];
       const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
 
       if (isProtected && !isLoggedIn) {

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Input } from "@/ui/input";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -28,36 +29,32 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex justify-center items-center min-h-screen">
+    <main className="flex justify-center items-center min-h-[88.5vh]">
       <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white p-6 rounded shadow">
         <h2 className="text-xl font-bold mb-4">Login</h2>
 
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium mb-1">
-            Email
-          </label>
-          <input
+          <Input
+          placeholder=" "
+          label="Email"
             id="email"
             type="email"
-            className="w-full border px-3 py-2 rounded"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e:React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             required
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium mb-1">
-            Password
-          </label>
-          <input
+          <Input
+            label="Password"
+             placeholder=" "
             id="password"
             type="password"
-            className="w-full border px-3 py-2 rounded"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e:React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             required
           />
         </div>

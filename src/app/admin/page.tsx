@@ -24,8 +24,8 @@ export default async function AdminPage() {
   });
 
   return (
-    <main className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+    <main className="p-4 max-w-4xl mx-auto min-h-[88.5vh]">
+      <h1 className="text-3xl font-bold mb-6 text-center text-zinc-200">Admin Dashboard</h1>
       <UserTable users={users} />
     </main>
   );

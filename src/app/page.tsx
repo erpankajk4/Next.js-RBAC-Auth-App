@@ -16,10 +16,10 @@ export default function HomePage() {
   }, [status]);
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-8">
-      <div className="bg-white shadow rounded-lg p-6 text-center max-w-lg w-full">
-        <h1 className="text-3xl font-bold mb-4">Welcome to the RBAC Auth App</h1>
-        <p className="text-gray-600 mb-6">
+    <main className="flex flex-col items-center justify-center  min-h-[88.5vh] px-5">
+      <div className="bg- shadow rounded-lg px-6 border border-zinc-200 p-5 text-center max-w-lg w-full">
+        <h1 className="text-3xl md:text-5xl font-bold mb-4 text-zinc-200">Welcome to the RBAC Auth App</h1>
+        <p className="text-zinc-200 mb-6">
           This is a secure full-stack app with role-based access control.
         </p>
 
@@ -45,7 +45,7 @@ export default function HomePage() {
           </>
         ) : (
           <button
-            className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+            className="w-full bg-[#b8ebee] text-black py-2 rounded hover:bg-[#193b65] transition-all duration-300 hover:text-zinc-200 border-2 hover:border-zinc-200 border-transparent"
             onClick={() => router.push("/login")}
           >
             Login

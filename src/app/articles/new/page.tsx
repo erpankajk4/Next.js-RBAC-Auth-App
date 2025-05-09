@@ -12,8 +12,8 @@ export default async function NewArticlePage() {
   }
 
   return (
-    <main className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Create New Article</h1>
+    <main className="p-6 max-w-xl mx-auto min-h-[88.5vh]">
+      <h1 className="text-3xl text-center font-bold mb-4 text-zinc-200">Create New Article</h1>
       <CreateArticleForm userId={session.user.id} />
     </main>
   );

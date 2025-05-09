@@ -22,7 +22,7 @@ export default function ProfilePage() {
   const isAdmin = session?.user?.role === "ADMIN";
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen">
+    <main className="flex flex-col items-center justify-center min-h-[88.5vh]">
       <div className="bg-white p-6 rounded shadow max-w-sm w-full">
         <h1 className="text-xl font-semibold mb-4">Welcome, {session?.user?.name}</h1>
         <p><strong>Email:</strong> {session?.user?.email}</p>

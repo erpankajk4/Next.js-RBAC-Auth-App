@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { updateUserRole } from "../actions";
+
 type User = {
   id: string;
   name: string | null;
@@ -20,33 +21,35 @@ export default function UserTable({ users }: { users: User[] }) {
   };
 
   return (
-    <table className="w-full border">
-      <thead>
-        <tr className="bg-gray-100">
-          <th className="p-2 text-left">Name</th>
-          <th className="p-2 text-left">Email</th>
-          <th className="p-2 text-left">Role</th>
-          <th className="p-2 text-left">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {users.map((user) => (
-          <tr key={user.id} className="border-t">
-            <td className="p-2">{user.name}</td>
-            <td className="p-2">{user.email}</td>
-            <td className="p-2">{user.role}</td>
-            <td className="p-2">
-              <button
-                onClick={() => handleRoleChange(user.id, user.role)}
-                className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
-                disabled={isPending}
-              >
-                Make {user.role === "ADMIN" ? "USER" : "ADMIN"}
-              </button>
-            </td>
+    <div className="w-full overflow-x-auto">
+      <table className="min-w-[600px] w-full border rounded-xl overflow-hidden text-sm sm:text-base">
+        <thead>
+          <tr className="bg-[#80e0ef] text-left">
+            <th className="p-3">Name</th>
+            <th className="p-3">Email</th>
+            <th className="p-3">Role</th>
+            <th className="p-3">Actions</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id} className="border-t bg-zinc-200">
+              <td className="p-3">{user.name}</td>
+              <td className="p-3">{user.email}</td>
+              <td className="p-3">{user.role}</td>
+              <td className="p-3">
+                <button
+                  onClick={() => handleRoleChange(user.id, user.role)}
+                  className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 disabled:opacity-50"
+                  disabled={isPending}
+                >
+                  Make {user.role === "ADMIN" ? "USER" : "ADMIN"}
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

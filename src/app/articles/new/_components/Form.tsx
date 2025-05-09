@@ -2,15 +2,43 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Input, TextareaAutoGrowing } from "@/ui/input";
 
 export default function CreateArticleForm({ userId }: { userId: string }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ title: "", content: "" });
+
   const router = useRouter();
+
+  const wordCount = (text: string) =>
+    text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+
+  const TITLE_LIMIT = 10;
+  const CONTENT_LIMIT = 300;
+
+  const validate = () => {
+    const errors = {
+      title:
+        wordCount(title) > TITLE_LIMIT
+          ? `Title must not exceed ${TITLE_LIMIT} words.`
+          : "",
+      content:
+        wordCount(content) > CONTENT_LIMIT
+          ? `Content must not exceed ${CONTENT_LIMIT} words.`
+          : "",
+    };
+
+    setError(errors);
+
+    return !errors.title && !errors.content;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+
     setLoading(true);
 
     const res = await fetch("/api/articles", {
@@ -30,26 +58,43 @@ export default function CreateArticleForm({ userId }: { userId: string }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-5 bg-zinc-200 p-5 rounded-2xl"
+    >
       <div>
-        <label className="block mb-1">Title</label>
-        <input
-          className="w-full border p-2 rounded"
+        <Input
+          label="Title"
+          placeholder=" "
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
           required
         />
+        <div className="flex justify-between text-sm mt-1">
+          <span className={wordCount(title) > TITLE_LIMIT ? "text-red-600" : ""}>
+            {wordCount(title)} / {TITLE_LIMIT} words
+          </span>
+        </div>
+        {error.title && <p className="text-red-600 text-sm">{error.title}</p>}
       </div>
 
       <div>
-        <label className="block mb-1">Content</label>
-        <textarea
-          className="w-full border p-2 rounded"
+        <TextareaAutoGrowing
+          label="Content"
+          placeholder=" "
           rows={4}
           value={content}
           onChange={(e) => setContent(e.target.value)}
           required
         />
+        <div className="flex justify-between text-sm mt-1">
+          <span className={wordCount(content) > CONTENT_LIMIT ? "text-red-600" : ""}>
+            {wordCount(content)} / {CONTENT_LIMIT} words
+          </span>
+        </div>
+        {error.content && (
+          <p className="text-red-600 text-sm">{error.content}</p>
+        )}
       </div>
 
       <button

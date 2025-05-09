@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function ArticlesPage() {
   const session = await getSession();
 
-if (!session?.user || !(session.user.role === "ADMIN" || session.user.role === "USER")) {
+if (!session?.user || !(session?.user?.role === "ADMIN" || session?.user?.role === "USER")) {
   redirect("/login");
 }
 

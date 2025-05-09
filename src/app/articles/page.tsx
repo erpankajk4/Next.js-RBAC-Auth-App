@@ -7,10 +7,10 @@ export const runtime = "nodejs";
 
 export default async function ArticlesPage() {
   const session = await getSession();
-
-  if (!session || !session?.user) {
-    redirect("/login");
-  }
+  
+if (!session?.user || !(session.user.role === "ADMIN" || session.user.role === "USER")) {
+  redirect("/login");
+}
 
   const articles = await prisma.article.findMany({
     where: session.user.role === "ADMIN" ? {} : { userId: session.user.id },

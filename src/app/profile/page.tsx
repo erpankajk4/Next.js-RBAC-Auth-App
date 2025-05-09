@@ -13,6 +13,8 @@ export default function ProfilePage() {
   useEffect(() => {
     if (status === "unauthenticated") {
       router.replace("/login");
+      router.refresh(); 
+
     }
   }, [status]);
 

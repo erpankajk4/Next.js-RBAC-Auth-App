@@ -7,7 +7,7 @@ import { compare } from "bcryptjs";
 import { User as PrismaUser } from "@/generated/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  // trustHost: true,
+  trustHost: true,
   theme: {
     logo: "/logo.png",
   },
